@@ -5,6 +5,10 @@ const LABELS: Record<string, string> = {
   explore: "EXPLORE →",
   view: "VIEW",
   drag: "DRAG",
+  play: "PLAY",
+  trace: "TRACE",
+  inspect: "INSPECT",
+  open: "OPEN →",
   hover: "",
 };
 
@@ -29,7 +33,7 @@ export default function Cursor() {
       const labelled =
         t?.closest?.("[data-cursor]") as HTMLElement | null;
       const interactive = t?.closest?.(
-        "a, button, .skill-node, .scene, .lab-cell"
+        "a, button, .skill-node, .scene, .s-n, .s-chipbtn, .s-row, .s-alayer"
       );
       if (labelled?.dataset.cursor) {
         document.body.dataset.cursor = labelled.dataset.cursor;
@@ -38,7 +42,15 @@ export default function Cursor() {
           ring.textContent =
             LABELS[labelled.dataset.cursor] ?? labelled.dataset.cursor;
       } else if (interactive) {
-        document.body.dataset.cursor = "hover";
+        const anchor = (interactive as HTMLElement).closest?.("a") as HTMLAnchorElement | null;
+        const href = anchor?.getAttribute("href") ?? "";
+        if (href.startsWith("http") || href.startsWith("mailto:")) {
+          document.body.dataset.cursor = "open";
+          const ring = ringRef.current?.querySelector("i");
+          if (ring) ring.textContent = LABELS.open;
+        } else {
+          document.body.dataset.cursor = "hover";
+        }
       } else {
         document.body.dataset.cursor = "";
       }

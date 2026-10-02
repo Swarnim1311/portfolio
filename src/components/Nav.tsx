@@ -4,7 +4,7 @@ const LINKS = [
   ["HOME", "#top"],
   ["ABOUT", "#about"],
   ["WORK", "#work"],
-  ["LAB", "#lab"],
+  ["SAARTHI", "#saarthi"],
   ["STACK", "#stack"],
   ["CONTACT", "#contact"],
 ] as const;
@@ -16,7 +16,7 @@ export default function Nav() {
       const p = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
       const bar = document.querySelector<HTMLElement>(".progress i");
       if (bar) bar.style.transform = `scaleX(${p})`;
-      const ids = ["top", "about", "work", "lab", "stack", "contact"];
+      const ids = ["top", "about", "stack", "work", "saarthi", "contact"];
       let current = "top";
       for (const id of ids) {
         const el = document.getElementById(id);

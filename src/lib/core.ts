@@ -90,3 +90,49 @@ export function initGlobalPointer() {
 
 /** Shared scroll velocity (0..1), updated via Lenis callback. */
 export const scrollStore = { velocity: 0, y: 0 };
+
+/**
+ * Subtle magnetic behavior for important controls (2–8px toward cursor, spring back).
+ * Delegated single listener, transform/opacity only, disabled on touch + reduced motion.
+ */
+export function initMagnetic() {
+  if (window.matchMedia("(hover: none), (pointer: coarse)").matches) return () => {};
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
+  const SELECTOR = ".magnetic, .pill, .proj-cta, .resume-btn, .chip";
+  let current: HTMLElement | null = null;
+  const onMove = (e: PointerEvent) => {
+    const t = (e.target as HTMLElement | null)?.closest?.(SELECTOR) as HTMLElement | null;
+    if (current && current !== t) {
+      current.style.transform = "";
+      current = null;
+    }
+    if (!t) return;
+    const r = t.getBoundingClientRect();
+    const dx = e.clientX - (r.left + r.width / 2);
+    const dy = e.clientY - (r.top + r.height / 2);
+    const d = Math.hypot(dx, dy);
+    const R = Math.max(90, Math.max(r.width, r.height));
+    if (d < R) {
+      // clamp travel to 2–8px so buttons never run away from the click
+      const mx = Math.max(-8, Math.min(8, dx * 0.16));
+      const my = Math.max(-8, Math.min(8, dy * 0.2));
+      t.style.transform = `translate(${mx.toFixed(1)}px, ${my.toFixed(1)}px)`;
+      current = t;
+    } else if (current === t) {
+      t.style.transform = "";
+      current = null;
+    }
+  };
+  const onLeave = () => {
+    if (current) {
+      current.style.transform = "";
+      current = null;
+    }
+  };
+  window.addEventListener("pointermove", onMove, { passive: true });
+  document.addEventListener("pointerleave", onLeave);
+  return () => {
+    window.removeEventListener("pointermove", onMove);
+    document.removeEventListener("pointerleave", onLeave);
+  };
+}

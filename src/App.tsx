@@ -8,8 +8,9 @@ import Nav from "./components/Nav";
 import Hero from "./components/Hero";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
-import { About, Archive, Contact, Finale, Lab } from "./components/Journey";
-import { initGlobalPointer, scrollStore, useRevealRoot } from "./lib/core";
+import { About, Archive, Contact, Finale } from "./components/Journey";
+import Saarthi from "./components/Saarthi";
+import { initGlobalPointer, initMagnetic, scrollStore, useRevealRoot } from "./lib/core";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -40,6 +41,7 @@ export default function App() {
 
   useEffect(() => {
     const cleanupPointer = initGlobalPointer();
+    const cleanupMagnetic = initMagnetic();
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     let lenis: Lenis | null = null;
@@ -110,6 +112,7 @@ export default function App() {
         ScrollTrigger.getAll().forEach((s) => s.kill());
         stretchers.forEach((s) => s.kill());
         cleanupPointer();
+        cleanupMagnetic();
       };
     }
     // velocity decay when no lenis (reduced motion): derive from native scroll
@@ -125,6 +128,7 @@ export default function App() {
       window.removeEventListener("scroll", onScroll);
       if (raf) cancelAnimationFrame(raf);
       cleanupPointer();
+      cleanupMagnetic();
     };
   }, []);
 
@@ -153,13 +157,13 @@ export default function App() {
         <Projects />
         <Marquee
           items={[
-            "LAB OPEN — HONEST EXPERIMENTS",
-            "NO FAKE METRICS",
+            "SAARTHI — FROM ATMOSPHERE TO ACTION",
+            "SANGRUR · PUNJAB · SIX BLOCKS",
+            "16-DAY OUTLOOK · RISK · ADVISORY",
             "SCROLL IS AN INPUT",
-            "HOVER EVERYTHING",
           ]}
         />
-        <Lab />
+        <Saarthi />
         <Archive />
         <Contact />
         <Finale />
