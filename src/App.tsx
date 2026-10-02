@@ -158,7 +158,7 @@ export default function App() {
         <Marquee
           items={[
             "SAARTHI — FROM ATMOSPHERE TO ACTION",
-            "SANGRUR · PUNJAB · SIX BLOCKS",
+            "FEATURED PROJECT — 01",
             "16-DAY OUTLOOK · RISK · ADVISORY",
             "SCROLL IS AN INPUT",
           ]}
