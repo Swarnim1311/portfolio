@@ -73,7 +73,7 @@ export default function Hero() {
             <span className="row row-final" aria-hidden="true">
               <span className="hero-final-line" data-depth="1.25">
                 <span className="i">I</span>
-                <span className="it">experiment.</span>
+                <span className="it">&nbsp;experiment.</span>
               </span>
             </span>
           </h1>
